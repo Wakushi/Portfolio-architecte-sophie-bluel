@@ -134,15 +134,40 @@ a {
 }
 /** end reset css**/
 body {
-  max-width: 1140px;
-  margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
 }
+
+main {
+  margin: 0 auto;
+}
+
+main,
+.header-content {
+  max-width: 1140px;
+}
 header {
+  display: flex;
+  flex-direction: column;
+}
+
+header,
+.header--edit {
+  justify-content: center;
+}
+
+.header-content {
   display: flex;
   justify-content: space-between;
   margin: 50px 0;
+  align-self: center;
+  width: 100%;
+}
+
+.header--edit {
+  display: none;
+  background-color: black;
+  padding: 0.875rem;
 }
 
 .active--link {
@@ -364,7 +389,7 @@ input[type="submit"] {
   display: none;
   align-items: center;
   gap: 0.3rem;
-  margin: 1rem 0 0 3.5rem;
+
   cursor: pointer;
 }
 
@@ -372,16 +397,48 @@ input[type="submit"] {
   width: 14px;
 }
 
+.edit-button--header {
+  color: white;
+}
+
+.edit-button--header span {
+  margin-right: 1.3rem;
+}
+
+.edit-button--header img {
+  filter: invert(1);
+}
+
 .edit-button--top {
+  margin-bottom: 1.18rem;
+}
+
+.edit-button--mid {
   width: 100%;
+  margin: 1rem 0 0 3.5rem;
 }
 
 .edit-button--bottom {
   margin: 0;
 }
 
-.edit-button:hover span {
+.edit-button:not(.edit-button--header):hover span {
   text-decoration: underline;
+}
+
+.publish-button {
+  border: transparent;
+  border-radius: 3.75rem;
+  padding: 0.7rem 1.4rem;
+  font-family: "Work Sans";
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.publish-button:hover,
+.publish-button:focus {
+  color: white;
+  background-color: #1d6154;
 }
 
 footer nav ul {

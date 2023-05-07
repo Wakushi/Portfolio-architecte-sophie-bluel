@@ -1,6 +1,12 @@
 const apiURL = "http://localhost:5678/api";
+
+// COLLETIONS
+
 const worksCollection = await getWorks();
 const displayedWorks = worksCollection;
+
+// DOM
+
 const gallery = document.getElementById("gallery");
 const galleryFilters = document.getElementById("galleryFilters");
 const loginForm = document.getElementById("loginForm");
@@ -135,16 +141,17 @@ function logOut() {
 
 function handleEditButtons() {
   const editButtons = document.querySelectorAll(".edit-button");
-  if(isUserLogged()){
-    console.log('logged')
-    editButtons.forEach(button => {
-      button.style.display = 'flex'
-    })
+  const headerEditBar = document.getElementById("headerEditBar");
+  if (isUserLogged()) {
+    headerEditBar.style.display = "flex"
+    editButtons.forEach((button) => {
+      button.style.display = "flex";
+    });
   } else {
-    console.log('not logged')
-    editButtons.forEach(button => {
-      button.style.display = 'none'
-    })
+    headerEditBar.style.display = "none"
+    editButtons.forEach((button) => {
+      button.style.display = "none";
+    });
   }
 }
 
@@ -156,4 +163,4 @@ isUserLogged();
 if (loginButton) {
   loginButton.addEventListener("click", login);
 }
-handleEditButtons()
+handleEditButtons();
