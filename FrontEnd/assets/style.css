@@ -148,6 +148,10 @@ header {
 .active--link {
   font-weight: 600;
 }
+
+#navLogin {
+  cursor: pointer;
+}
 section {
   margin: 50px 0;
 }

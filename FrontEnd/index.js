@@ -1,12 +1,16 @@
-const gallery = document.getElementById("gallery");
-const galleryFilters = document.getElementById("galleryFilters");
+const apiURL = "http://localhost:5678/api";
 const worksCollection = await getWorks();
 const displayedWorks = worksCollection;
+const gallery = document.getElementById("gallery");
+const galleryFilters = document.getElementById("galleryFilters");
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const navLogin = document.getElementById("navLogin");
 
 // API - GETTER FUNCTIONS
 
 function getWorks() {
-  const works = fetch("http://localhost:5678/api/works")
+  const works = fetch(`${apiURL}/works`)
     .then((res) => res.json())
     .then((data) => {
       return data;
@@ -16,7 +20,7 @@ function getWorks() {
 }
 
 function getCategories() {
-  const categories = fetch("http://localhost:5678/api/categories")
+  const categories = fetch(`${apiURL}/categories`)
     .then((res) => res.json())
     .then((data) => {
       return data;
@@ -76,6 +80,62 @@ function onFilterGallery({ target }) {
   }
 }
 
+// lOGIN METHOD
+
+if (loginButton) {
+  loginButton.addEventListener("click", login);
+}
+
+function login(event) {
+  event.preventDefault();
+  const email = loginForm.elements.email.value;
+  const password = loginForm.elements.password.value;
+
+  const user = {
+    email: email,
+    password: password,
+  };
+
+  fetch(`${apiURL}/users/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      window.location.href = "../index.html";
+      localStorage.setItem("token", data.token);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Login failed. Please check your email and password.");
+    });
+}
+
+function isUserLogged() {
+  const storageToken = localStorage.getItem("token");
+  if (storageToken) {
+    navLogin.innerText = "logout";
+    navLogin.addEventListener("click", logOut);
+    return true;
+  } else {
+    navLogin.innerText = "login";
+    return false;
+  }
+}
+
+function logOut() {
+  localStorage.clear("token");
+}
+
 // ON LOAD EVENTS
 renderGallery(worksCollection);
 renderFilters();
+isUserLogged();
