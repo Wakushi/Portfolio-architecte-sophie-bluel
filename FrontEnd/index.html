@@ -19,7 +19,7 @@
       <nav>
         <ul>
           <li class="active--link"><a href="#">projets</a></li>
-          <li>contact</li>
+          <li><a href="#contact">contact</a></li>
           <li><a href="./pages/login.html" id="navLogin">login</a></li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
@@ -48,12 +48,28 @@
             : architecte DPLG, décorateur(trice)
           </p>
         </article>
+        <div class="edit-button edit-button--top">
+          <div>
+            <img src="./assets/icons/edit.png" alt="edit icon" />
+          </div>
+          <span>modifier</span>
+        </div>
       </section>
       <section id="portfolio">
-        <h2>Mes Projets</h2>
-		<div id="galleryFilters" class="gallery__filters">
-			<button class="basic-button button--active" id="filterAll">Tous</button>
-		</div>
+        <div class="projects-top">
+          <h2>Mes Projets</h2>
+          <div class="edit-button edit-button--bottom">
+            <div>
+              <img src="./assets/icons/edit.png" alt="edit icon" />
+            </div>
+            <span>modifier</span>
+          </div>
+        </div>
+        <div id="galleryFilters" class="gallery__filters">
+          <button class="basic-button button--active" id="filterAll">
+            Tous
+          </button>
+        </div>
         <div id="gallery" class="gallery"></div>
       </section>
       <section id="contact">

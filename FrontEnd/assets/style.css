@@ -193,6 +193,7 @@ li:hover {
 #introduction {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 #introduction figure {
   flex: 1;
@@ -215,7 +216,7 @@ li:hover {
 }
 #portfolio h2 {
   text-align: center;
-  margin-bottom: 1em;
+  margin-right: 1rem;
 }
 .gallery {
   width: 100%;
@@ -253,6 +254,14 @@ li:hover {
 .gallery__filters .button--active {
   color: white;
   background-color: #1d6154;
+}
+
+.projects-top {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
 }
 
 .gallery img {
@@ -348,6 +357,30 @@ input[type="submit"] {
 }
 
 .login a {
+  text-decoration: underline;
+}
+
+.edit-button {
+  display: none;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 1rem 0 0 3.5rem;
+  cursor: pointer;
+}
+
+.edit-button img {
+  width: 14px;
+}
+
+.edit-button--top {
+  width: 100%;
+}
+
+.edit-button--bottom {
+  margin: 0;
+}
+
+.edit-button:hover span {
   text-decoration: underline;
 }
 

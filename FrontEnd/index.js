@@ -82,10 +82,6 @@ function onFilterGallery({ target }) {
 
 // lOGIN METHOD
 
-if (loginButton) {
-  loginButton.addEventListener("click", login);
-}
-
 function login(event) {
   event.preventDefault();
   const email = loginForm.elements.email.value;
@@ -115,7 +111,7 @@ function login(event) {
     })
     .catch((err) => {
       console.error(err);
-      alert("Login failed. Please check your email and password.");
+      alert("Incorrect email or password.");
     });
 }
 
@@ -135,7 +131,29 @@ function logOut() {
   localStorage.clear("token");
 }
 
+// EDIT FEATURES
+
+function handleEditButtons() {
+  const editButtons = document.querySelectorAll(".edit-button");
+  if(isUserLogged()){
+    console.log('logged')
+    editButtons.forEach(button => {
+      button.style.display = 'flex'
+    })
+  } else {
+    console.log('not logged')
+    editButtons.forEach(button => {
+      button.style.display = 'none'
+    })
+  }
+}
+
 // ON LOAD EVENTS
+
 renderGallery(worksCollection);
 renderFilters();
 isUserLogged();
+if (loginButton) {
+  loginButton.addEventListener("click", login);
+}
+handleEditButtons()
