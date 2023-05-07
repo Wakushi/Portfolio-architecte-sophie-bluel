@@ -219,17 +219,18 @@ li:hover {
   margin-bottom: 3.125rem;
 }
 
-.gallery__filters button {
+.gallery__filters .filter-button {
   font-family: Syne;
   border: 1px solid #1d6154;
   border-radius: 3.75rem;
   color: #1d6154;
   padding: 0.625rem 1.875rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 
-.gallery__filters button:hover,
-.gallery__filters button:focus {
+.gallery__filters .filter-button:hover,
+.gallery__filters .filter-button:focus {
   color: #1d6154;
   background-color: white;
 }
@@ -242,6 +243,11 @@ li:hover {
 .gallery img {
   width: 100%;
 }
+
+.gallery figure {
+  animation: fade-in-bottom 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
 #contact {
   width: 50%;
   margin: auto;
@@ -288,4 +294,20 @@ footer nav ul {
   display: flex;
   justify-content: flex-end;
   margin: 2em;
+}
+
+
+/* KEYFRAMES */
+
+@keyframes fade-in-bottom {
+  0% {
+    -webkit-transform: translateY(50px);
+            transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    opacity: 1;
+  }
 }
