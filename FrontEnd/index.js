@@ -36,8 +36,8 @@ async function renderFilters() {
   );
 }
 
-async function renderGallery(array) {
-  array.forEach(({ imageUrl, title }) => {
+async function renderGallery(workArray) {
+  workArray.forEach(({ imageUrl, title }) => {
     gallery.innerHTML += `
         <figure>
             <img src=${imageUrl} alt=${title}/>
@@ -47,12 +47,18 @@ async function renderGallery(array) {
   });
 }
 
-function onFilterGallery(event) {
-  const buttonId = event.target.id;
+function onFilterGallery({ target }) {
+  const buttonId = target.id;
+  const filterButtons = document.querySelectorAll(".filter-button");
+  filterButtons.forEach((button) => {
+    button.classList.remove("filter--active");
+  });
   gallery.innerHTML = "";
-  if (buttonId === "") {
+  if (buttonId === "filterAll") {
+    document.getElementById(buttonId).classList.add("filter--active");
     renderGallery(worksCollection);
   } else {
+    document.getElementById(buttonId).classList.add("filter--active");
     const filteredGallery = worksCollection.filter(
       (work) => work.categoryId == buttonId
     );
