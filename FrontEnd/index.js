@@ -3,6 +3,8 @@ const galleryFilters = document.getElementById("galleryFilters");
 const worksCollection = await getWorks();
 const displayedWorks = worksCollection;
 
+// API - GETTER FUNCTIONS
+
 function getWorks() {
   const works = fetch("http://localhost:5678/api/works")
     .then((res) => res.json())
@@ -23,42 +25,50 @@ function getCategories() {
   return categories;
 }
 
+// RENDERING FUNCTIONS
+
 async function renderFilters() {
-  const categories = await getCategories();
-  categories.forEach(({ id, name }) => {
-    galleryFilters.innerHTML += `
-        <button id=${id} class='filter-button'>${name}</button>
-    `;
-  });
-  const filterButtons = document.querySelectorAll(".filter-button");
-  filterButtons.forEach((button) =>
-    button.addEventListener("click", onFilterGallery)
-  );
+  if (galleryFilters) {
+    const categories = await getCategories();
+    categories.forEach(({ id, name }) => {
+      galleryFilters.innerHTML += `
+          <button id=${id} class='basic-button'>${name}</button>
+      `;
+    });
+    const filterButtons = document.querySelectorAll(".basic-button");
+    filterButtons.forEach((button) =>
+      button.addEventListener("click", onFilterGallery)
+    );
+  }
 }
 
 async function renderGallery(workArray) {
-  workArray.forEach(({ imageUrl, title }) => {
-    gallery.innerHTML += `
+  if (gallery) {
+    workArray.forEach(({ imageUrl, title }) => {
+      gallery.innerHTML += `
         <figure>
             <img src=${imageUrl} alt=${title}/>
             <figcaption>${title}</figcaption>
         </figure>
         `;
-  });
+    });
+  }
 }
+
+// FILTER METHOD
 
 function onFilterGallery({ target }) {
   const buttonId = target.id;
-  const filterButtons = document.querySelectorAll(".filter-button");
+  const filterButtons = document.querySelectorAll(".basic-button");
   filterButtons.forEach((button) => {
-    button.classList.remove("filter--active");
+    button.classList.remove("button--active");
   });
   gallery.innerHTML = "";
   if (buttonId === "filterAll") {
-    document.getElementById(buttonId).classList.add("filter--active");
+    document.getElementById(buttonId).classList.add("button--active");
     renderGallery(worksCollection);
   } else {
-    document.getElementById(buttonId).classList.add("filter--active");
+    document.getElementById(buttonId).classList.add("button--active");
     const filteredGallery = worksCollection.filter(
       (work) => work.categoryId == buttonId
     );

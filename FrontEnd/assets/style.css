@@ -127,6 +127,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
 /** end reset css**/
 body {
   max-width: 1140px;
@@ -138,6 +143,10 @@ header {
   display: flex;
   justify-content: space-between;
   margin: 50px 0;
+}
+
+.active--link {
+  font-weight: 600;
 }
 section {
   margin: 50px 0;
@@ -219,7 +228,8 @@ li:hover {
   margin-bottom: 3.125rem;
 }
 
-.gallery__filters .filter-button {
+.login-form .basic-button,
+.gallery__filters .basic-button {
   font-family: Syne;
   border: 1px solid #1d6154;
   border-radius: 3.75rem;
@@ -229,12 +239,14 @@ li:hover {
   font-size: 1rem;
 }
 
-.gallery__filters .filter-button:hover {
+.login-form .basic-button:hover,
+.gallery__filters .basic-button:hover {
   color: #1d6154;
   background-color: white;
 }
 
-.gallery__filters .filter--active {
+.login-form .basic-button,
+.gallery__filters .button--active {
   color: white;
   background-color: #1d6154;
 }
@@ -287,6 +299,52 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
+}
+
+.login,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  margin-top: 9.375rem;
+  margin-bottom: 21rem;
+}
+
+.login > h1 {
+  color: #1d6154;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 2.3rem;
+}
+
+.login-form {
+  width: 379px;
+  margin-bottom: 1.75rem;
+}
+
+.login-form label {
+  align-self: flex-start;
+  font-size: 0.875rem;
+  margin-bottom: 0.43rem;
+  font-weight: 500;
+  color: #3d3d3d;
+}
+
+.login-form input {
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  border: transparent;
+  height: 50px;
+  width: 90%;
+  padding: 0 1.2rem;
+  margin-bottom: 1.875rem;
+}
+
+.login a {
+  text-decoration: underline;
 }
 
 footer nav ul {
