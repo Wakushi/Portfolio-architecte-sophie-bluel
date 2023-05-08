@@ -1,12 +1,8 @@
 // VARIABLES
 
 const apiURL = "http://localhost:5678/api";
-let isModalDisplayed = false;
-
-// COLLECTIONS
-
 const worksCollection = await getWorks();
-const displayedWorks = worksCollection;
+let isModalDisplayed = false;
 
 // DOM
 
@@ -147,7 +143,7 @@ function logOut() {
 
 // EDIT FEATURES
 
-function handleEditButtons() {
+function handleEditButtonsRender() {
   const editButtons = document.querySelectorAll(".edit-button");
   const headerEditBar = document.getElementById("headerEditBar");
   if (isUserLogged()) {
@@ -174,13 +170,14 @@ const landingModalContent = `
     <button id="deleteGalleryBtn">Supprimer la galerie</button>`;
 
 const modalFormContent = `
+    <i id="returnModalIcon" class="fa-solid fa-arrow-left"></i>
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
     <h2>Ajout Photo</h2>
-    <div>
+    <section class="modal__add-picture">
       <img />
       <button>Ajouter Photo</button>
       <span>jpg, png : 4mo max</span>
-    </div>
+    </section>
     <form>
       <label>Titre</label>
       <input id="title" name="title" type="text" />
@@ -202,15 +199,17 @@ function toggleModal(event) {
       isModalDisplayed = false;
     } else {
       modal.style.display = "flex";
-      modalContent.innerHTML = landingModalContent;
       isModalDisplayed = true;
-      resetCloseModalEvent();
-      document
-        .getElementById("addWorkButton")
-        .addEventListener("click", onAddWork);
-      renderModalWorks();
+      renderLandingModal();
     }
   }
+}
+
+function renderLandingModal() {
+  modalContent.innerHTML = landingModalContent;
+  renderModalWorks();
+  document.getElementById("addWorkButton").addEventListener("click", onAddWork);
+  resetCloseModalEvent();
 }
 
 function closeModal() {
@@ -247,6 +246,9 @@ function renderModalWorks() {
 function onAddWork() {
   modalContent.innerHTML = modalFormContent;
   resetCloseModalEvent();
+  document
+    .getElementById("returnModalIcon")
+    .addEventListener("click", renderLandingModal);
 }
 
 // OTHER
@@ -269,7 +271,7 @@ function onLoadEvents() {
   if (loginButton) {
     loginButton.addEventListener("click", login);
   }
-  handleEditButtons();
+  handleEditButtonsRender();
   if (isMainPage()) {
     modal.addEventListener("click", toggleModal);
   }

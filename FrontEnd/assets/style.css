@@ -171,7 +171,7 @@ header {
   cursor: pointer;
 }
 section {
-  margin: 50px 0;
+  margin: 3.125rem 0;
 }
 
 h1 {
@@ -485,6 +485,10 @@ footer nav ul {
   animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
+.modal__add-picture {
+  background-color: #E8F1F7;
+}
+
 .modal h2 {
   font-family: "Work Sans";
   color: black;
@@ -493,13 +497,21 @@ footer nav ul {
   text-align: center;
 }
 
+.modal .fa-arrow-left,
 .modal .fa-xmark {
   position: absolute;
-  font-size: 1rem;
+  font-size: 1.1rem;
   z-index: 4;
-  top: 26px;
-  right: 30px;
   cursor: pointer;
+  top: 26px;
+}
+
+.modal .fa-xmark {
+  right: 30px;
+}
+
+.modal .fa-arrow-left {
+  left: 30px;
 }
 
 .modal-work {
