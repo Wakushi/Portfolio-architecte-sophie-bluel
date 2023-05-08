@@ -132,6 +132,10 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+img {
+  display: block;
+}
 /** end reset css**/
 body {
   font-family: "Work Sans";
@@ -312,6 +316,7 @@ li:hover {
 #contact h2 {
   margin-bottom: 20px;
 }
+
 #contact form {
   text-align: left;
   margin-top: 30px;
@@ -325,6 +330,7 @@ li:hover {
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #contact label {
   margin: 2em 0 1em 0;
 }
@@ -345,7 +351,7 @@ input[type="submit"] {
 }
 
 .login,
-.login-form {
+.basic-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -364,12 +370,12 @@ input[type="submit"] {
   margin-bottom: 2.3rem;
 }
 
-.login-form {
+.basic-form {
   width: 379px;
   margin-bottom: 1.75rem;
 }
 
-.login-form label {
+.basic-form label {
   align-self: flex-start;
   font-size: 0.875rem;
   margin-bottom: 0.43rem;
@@ -377,13 +383,24 @@ input[type="submit"] {
   color: #3d3d3d;
 }
 
-.login-form input {
+.basic-form select,
+.basic-form input {
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
   border: transparent;
   height: 50px;
   width: 90%;
   padding: 0 1.2rem;
   margin-bottom: 1.875rem;
+  font-family: "Work Sans";
+}
+
+.basic-form select {
+  width: 100%;
+}
+
+.basic-form option {
+  font-family: "Work Sans";
+  cursor: pointer;
 }
 
 .login a {
@@ -486,7 +503,21 @@ footer nav ul {
 }
 
 .modal__add-picture {
-  background-color: #E8F1F7;
+  background-color: #e8f1f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.25rem 0;
+  width: 100%;
+}
+
+.modal__add-picture .picture-icon {
+  margin-bottom: 1rem;
+}
+
+.modal__add-picture span {
+  font-size: 0.625rem;
 }
 
 .modal h2 {
@@ -543,9 +574,14 @@ footer nav ul {
   border-radius: 0.2rem;
 }
 
+#sendWorkBtn,
 #addWorkButton {
-  max-width: 230px;
+  max-width: 237px;
   margin: 0 auto 1.43rem;
+}
+
+#sendWorkBtn {
+  width: 237px;
 }
 
 #deleteGalleryBtn {
@@ -555,6 +591,21 @@ footer nav ul {
   background-color: transparent;
   font-family: "Syne", sans-serif;
   cursor: pointer;
+}
+
+#addWorkForm {
+  border-bottom: 1px #b3b3b3 solid;
+  padding-bottom: 2.9rem;
+}
+
+.add-picture--button {
+  background-color: #cbd6dc;
+  color: #306685;
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.875rem;
+  border: transparent;
+  margin-bottom: 0.4rem;
+  align-self: center !important;
 }
 
 /* KEYFRAMES */

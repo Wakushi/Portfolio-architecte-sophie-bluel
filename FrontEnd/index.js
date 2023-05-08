@@ -173,22 +173,19 @@ const modalFormContent = `
     <i id="returnModalIcon" class="fa-solid fa-arrow-left"></i>
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
     <h2>Ajout Photo</h2>
-    <section class="modal__add-picture">
-      <img />
-      <button>Ajouter Photo</button>
+    <form id="addWorkForm" class="basic-form">
+    <section id="modalAddPicture" class="modal__add-picture">
+      <img class="picture-icon" src='./assets/icons/picture.png' alt="Picture icon" />
+      <label class="basic-button add-picture--button" for="picture">+ Ajouter photo</label>
+      <input id="picture" type="file" style="display:none;"/>
       <span>jpg, png : 4mo max</span>
     </section>
-    <form>
-      <label>Titre</label>
+      <label for="title">Titre</label>
       <input id="title" name="title" type="text" />
-      <label>Catégorie</label>
-       <select>
-        <option>Objet</option>
-          <option>Appartement</option>
-         <option>Hôtel & restaurant</option>
-       </select>
-       <button>Valider</button>
-    </form>`;
+      <label for="category">Catégorie</label>
+       <select id="category" name="category"></select>
+    </form>
+    <button id="sendWorkBtn" class="basic-button button--active">Valider</button>`;
 
 function toggleModal(event) {
   if (event.target !== modal && event.target !== editButton) {
@@ -243,12 +240,38 @@ function renderModalWorks() {
   });
 }
 
-function onAddWork() {
+// MODAL - ADD WORK SECTION
+
+async function onAddWork() {
   modalContent.innerHTML = modalFormContent;
   resetCloseModalEvent();
   document
     .getElementById("returnModalIcon")
     .addEventListener("click", renderLandingModal);
+  document
+    .getElementById("picture")
+    .addEventListener("change", displaySelectedImage);
+  const categories = await getCategories();
+  document.getElementById("category").innerHTML = categories.map(
+    ({ id, name }) => {
+      return `<option id=${id}>${name}</option>`;
+    }
+  );
+}
+
+function displaySelectedImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const modalAddPicture = document.getElementById("modalAddPicture");
+      modalAddPicture.innerHTML = `
+          <img height="165px" src=${e.target.result} alt="Selected picture"/>
+      `;
+      modalAddPicture.style.padding = "0";
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
 // OTHER
