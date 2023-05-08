@@ -15,6 +15,7 @@ const loginButton = document.getElementById("loginButton");
 const navLogin = document.getElementById("navLogin");
 const modal = document.getElementById("modal");
 const closeModalIcon = document.getElementById("closeModalIcon");
+const editButton = document.getElementById("editButton");
 
 // API - GETTER FUNCTIONS
 
@@ -146,7 +147,6 @@ function logOut() {
 
 function handleEditButtons() {
   const editButtons = document.querySelectorAll(".edit-button");
-  const editButton = document.getElementById("editButton");
   const headerEditBar = document.getElementById("headerEditBar");
   if (isUserLogged()) {
     headerEditBar.style.display = "flex";
@@ -164,15 +164,24 @@ function handleEditButtons() {
 
 // MODAL
 
-function toggleModal() {
-  if (isModalDisplayed) {
-    modal.style.display = "none";
-    isModalDisplayed = false;
+function toggleModal(event) {
+  if (event.target !== modal && event.target !== editButton) {
+    event.stopPropagation();
   } else {
-    modal.style.display = "flex";
-    isModalDisplayed = true;
-    renderModalWorks();
+    if (isModalDisplayed) {
+      modal.style.display = "none";
+      isModalDisplayed = false;
+    } else {
+      modal.style.display = "flex";
+      isModalDisplayed = true;
+      renderModalWorks();
+    }
   }
+}
+
+function closeModal() {
+  modal.style.display = "none";
+  isModalDisplayed = false;
 }
 
 function renderModalWorks() {
@@ -216,5 +225,6 @@ if (loginButton) {
 }
 handleEditButtons();
 if (closeModalIcon) {
-  closeModalIcon.addEventListener("click", toggleModal);
+  closeModalIcon.addEventListener("click", closeModal);
 }
+modal.addEventListener("click", toggleModal);

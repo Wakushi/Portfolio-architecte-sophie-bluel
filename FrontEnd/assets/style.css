@@ -436,6 +436,11 @@ input[type="submit"] {
   margin: 0;
 }
 
+.edit-button--bottom img,
+.edit-button--bottom span {
+  pointer-events: none;
+}
+
 .edit-button:not(.edit-button--header):hover span {
   text-decoration: underline;
 }
@@ -541,11 +546,11 @@ footer nav ul {
 }
 
 #deleteGalleryBtn {
-  color: #D65353;
+  color: #d65353;
   font-size: 0.875rem;
   border: transparent;
   background-color: transparent;
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   cursor: pointer;
 }
 
