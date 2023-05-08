@@ -1,4 +1,5 @@
 const apiURL = "http://localhost:5678/api";
+let isModalDisplayed = false;
 
 // COLLETIONS
 
@@ -12,17 +13,21 @@ const galleryFilters = document.getElementById("galleryFilters");
 const loginForm = document.getElementById("loginForm");
 const loginButton = document.getElementById("loginButton");
 const navLogin = document.getElementById("navLogin");
+const modal = document.getElementById("modal");
+const closeModalIcon = document.getElementById("closeModalIcon");
 
 // API - GETTER FUNCTIONS
 
 function getWorks() {
-  const works = fetch(`${apiURL}/works`)
-    .then((res) => res.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => console.error(err));
-  return works;
+  if (isMainPage()) {
+    const works = fetch(`${apiURL}/works`)
+      .then((res) => res.json())
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => console.error(err));
+    return works;
+  }
 }
 
 function getCategories() {
@@ -42,10 +47,10 @@ async function renderFilters() {
     const categories = await getCategories();
     categories.forEach(({ id, name }) => {
       galleryFilters.innerHTML += `
-          <button id=${id} class='basic-button'>${name}</button>
+          <button id=${id} class='basic-button filter-button'>${name}</button>
       `;
     });
-    const filterButtons = document.querySelectorAll(".basic-button");
+    const filterButtons = document.querySelectorAll(".filter-button");
     filterButtons.forEach((button) =>
       button.addEventListener("click", onFilterGallery)
     );
@@ -69,7 +74,7 @@ async function renderGallery(workArray) {
 
 function onFilterGallery({ target }) {
   const buttonId = target.id;
-  const filterButtons = document.querySelectorAll(".basic-button");
+  const filterButtons = document.querySelectorAll(".filter-button");
   filterButtons.forEach((button) => {
     button.classList.remove("button--active");
   });
@@ -141,17 +146,63 @@ function logOut() {
 
 function handleEditButtons() {
   const editButtons = document.querySelectorAll(".edit-button");
+  const editButton = document.getElementById("editButton");
   const headerEditBar = document.getElementById("headerEditBar");
   if (isUserLogged()) {
-    headerEditBar.style.display = "flex"
+    headerEditBar.style.display = "flex";
     editButtons.forEach((button) => {
       button.style.display = "flex";
     });
-  } else {
-    headerEditBar.style.display = "none"
+    editButton.addEventListener("click", toggleModal);
+  } else if (!isUserLogged() && headerEditBar) {
+    headerEditBar.style.display = "none";
     editButtons.forEach((button) => {
       button.style.display = "none";
     });
+  }
+}
+
+// MODAL
+
+function toggleModal() {
+  if (isModalDisplayed) {
+    modal.style.display = "none";
+    isModalDisplayed = false;
+  } else {
+    modal.style.display = "flex";
+    isModalDisplayed = true;
+    renderModalWorks();
+  }
+}
+
+function renderModalWorks() {
+  const modalList = document.getElementById("modalWorkList");
+  modalList.innerHTML = "";
+  worksCollection.forEach(({ imageUrl, title, id }) => {
+    modalList.innerHTML += `
+    <figure class="modal-work" id=${id}>
+      <div class="modal-work__trash">
+        <i class="fa-solid fa-trash-can"></i>
+      </div>
+      <img
+        width="100%"
+        src=${imageUrl}
+        alt=${title}
+      />
+      <figcaption>éditer</figcaption>
+    </figure>
+    `;
+  });
+}
+
+// OTHER
+
+function isMainPage() {
+  const currentURL = window.location.pathname;
+  if (currentURL.includes("login")) {
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -164,3 +215,6 @@ if (loginButton) {
   loginButton.addEventListener("click", login);
 }
 handleEditButtons();
+if (closeModalIcon) {
+  closeModalIcon.addEventListener("click", toggleModal);
+}
