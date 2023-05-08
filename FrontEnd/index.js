@@ -14,7 +14,7 @@ const loginForm = document.getElementById("loginForm");
 const loginButton = document.getElementById("loginButton");
 const navLogin = document.getElementById("navLogin");
 const modal = document.getElementById("modal");
-const closeModalIcon = document.getElementById("closeModalIcon");
+const modalContent = document.getElementById("modalContent");
 const editButton = document.getElementById("editButton");
 
 // API - GETTER FUNCTIONS
@@ -164,6 +164,33 @@ function handleEditButtons() {
 
 // MODAL
 
+const landingModalContent = `
+    <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
+    <h2>Galerie photo</h2>
+    <section id="modalWorkList" class="modal-work-list"></section>
+    <button id="addWorkButton" class="basic-button">Ajouter une photo</button>
+    <button id="deleteGalleryBtn">Supprimer la galerie</button>`;
+
+const modalFormContent = `
+    <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
+    <h2>Ajout Photo</h2>
+    <div>
+      <img />
+      <button>Ajouter Photo</button>
+      <span>jpg, png : 4mo max</span>
+    </div>
+    <form>
+      <label>Titre</label>
+      <input id="title" name="title" type="text" />
+      <label>Catégorie</label>
+       <select>
+        <option>Objet</option>
+          <option>Appartement</option>
+         <option>Hôtel & restaurant</option>
+       </select>
+       <button>Valider</button>
+    </form>`;
+
 function toggleModal(event) {
   if (event.target !== modal && event.target !== editButton) {
     event.stopPropagation();
@@ -173,7 +200,12 @@ function toggleModal(event) {
       isModalDisplayed = false;
     } else {
       modal.style.display = "flex";
+      modalContent.innerHTML = landingModalContent;
       isModalDisplayed = true;
+      resetCloseModalEvent();
+      document
+        .getElementById("addWorkButton")
+        .addEventListener("click", onAddWork);
       renderModalWorks();
     }
   }
@@ -182,6 +214,12 @@ function toggleModal(event) {
 function closeModal() {
   modal.style.display = "none";
   isModalDisplayed = false;
+}
+
+function resetCloseModalEvent() {
+  document
+    .getElementById("closeModalIcon")
+    .addEventListener("click", closeModal);
 }
 
 function renderModalWorks() {
@@ -204,6 +242,11 @@ function renderModalWorks() {
   });
 }
 
+function onAddWork() {
+  modalContent.innerHTML = modalFormContent;
+  resetCloseModalEvent();
+}
+
 // OTHER
 
 function isMainPage() {
@@ -224,7 +267,4 @@ if (loginButton) {
   loginButton.addEventListener("click", login);
 }
 handleEditButtons();
-if (closeModalIcon) {
-  closeModalIcon.addEventListener("click", closeModal);
-}
 modal.addEventListener("click", toggleModal);
