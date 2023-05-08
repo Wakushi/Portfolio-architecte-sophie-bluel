@@ -1,7 +1,9 @@
+// VARIABLES
+
 const apiURL = "http://localhost:5678/api";
 let isModalDisplayed = false;
 
-// COLLETIONS
+// COLLECTIONS
 
 const worksCollection = await getWorks();
 const displayedWorks = worksCollection;
@@ -58,7 +60,7 @@ async function renderFilters() {
   }
 }
 
-async function renderGallery(workArray) {
+function renderGallery(workArray) {
   if (gallery) {
     workArray.forEach(({ imageUrl, title }) => {
       gallery.innerHTML += `
@@ -92,7 +94,7 @@ function onFilterGallery({ target }) {
   }
 }
 
-// lOGIN METHOD
+// AUTH METHOD
 
 function login(event) {
   event.preventDefault();
@@ -260,11 +262,17 @@ function isMainPage() {
 
 // ON LOAD EVENTS
 
-renderGallery(worksCollection);
-renderFilters();
-isUserLogged();
-if (loginButton) {
-  loginButton.addEventListener("click", login);
+function onLoadEvents() {
+  renderGallery(worksCollection);
+  renderFilters();
+  isUserLogged();
+  if (loginButton) {
+    loginButton.addEventListener("click", login);
+  }
+  handleEditButtons();
+  if (isMainPage()) {
+    modal.addEventListener("click", toggleModal);
+  }
 }
-handleEditButtons();
-modal.addEventListener("click", toggleModal);
+
+onLoadEvents();
