@@ -46,8 +46,7 @@ function getCategories() {
 
 async function renderFilters() {
   if (galleryFilters) {
-    const categories = getCategories();
-    categories.forEach((name, id) => {
+    getCategories().forEach((name, id) => {
       galleryFilters.innerHTML += `
           <button id=${id} class='basic-button filter-button'>${name}</button>
       `;
@@ -275,16 +274,15 @@ async function onAddWork() {
     .getElementById("addWorkForm")
     .addEventListener("change", checkFormValidity);
 
-  const categories = await getCategories();
-
-  document.getElementById("category").innerHTML = categories.map(
-    ({ id, name }) => {
-      return `<option value=${id}>${name}</option>`;
-    }
-  );
   document
     .getElementById("sendWorkBtn")
     .addEventListener("click", sendWorkData);
+
+  getCategories().forEach((name, id) => {
+    document.getElementById(
+      "category"
+    ).innerHTML += `<option value=${id}>${name}</option>`;
+  });
 }
 
 function displaySelectedImage(event) {
