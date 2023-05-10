@@ -272,7 +272,7 @@ async function onAddWork() {
 
   document
     .getElementById("addWorkForm")
-    .addEventListener("change", checkFormValidity);
+    .addEventListener("change", checkWorkFormValidity);
 
   document
     .getElementById("sendWorkBtn")
@@ -301,7 +301,7 @@ function displaySelectedImage(event) {
   }
 }
 
-function checkFormValidity() {
+function checkWorkFormValidity() {
   const title = document.getElementById("title");
   const sendWorkBtn = document.getElementById("sendWorkBtn");
   if (selectedImage !== undefined) {
