@@ -393,6 +393,14 @@ input[type="submit"] {
   margin-bottom: 2.3rem;
 }
 
+#loginForm {
+ gap:1.875rem ;
+}
+
+.login-form__section {
+  width: 100%;
+}
+
 .basic-form {
   width: 379px;
   margin-bottom: 1.75rem;

@@ -28,11 +28,18 @@
     <main>
       <section class="login flex--center flex--column flex--aligned">
         <h1>Log In</h1>
-        <form id="loginForm" class="basic-form flex--center flex--column flex--aligned">
-          <label for="email">E-mail</label>
-          <input id="email" type="email" name="email" required />
-          <label for="password">Mot de passe</label>
-          <input id="password" type="password" name="password" required />
+        <form
+          id="loginForm"
+          class="basic-form flex--center flex--column flex--aligned"
+        >
+          <div class="login-form__section flex--column">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" name="email" required />
+          </div>
+          <div class="login-form__section flex--column">
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" name="password" required />
+          </div>
           <button class="basic-button" id="loginButton" type="button">
             Se connecter
           </button>
