@@ -15,6 +15,7 @@ const navLogin = document.getElementById("navLogin");
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 const editButton = document.getElementById("editButton");
+const confirmModal = document.querySelector("[data-modal]")
 
 // API - GETTER FUNCTIONS
 
@@ -222,13 +223,14 @@ function resetCloseModalEvent() {
 }
 
 function renderModalWorks() {
+  console.log('rendering..;')
   const modalList = document.getElementById("modalWorkList");
   modalList.innerHTML = "";
   worksCollection.forEach(({ imageUrl, title, id }) => {
     modalList.innerHTML += `
     <figure class="modal-work" id=${id}>
       <div class="modal-work__trash">
-        <i class="fa-solid fa-trash-can"></i>
+        <i class="fa-solid fa-trash-can delete-work-icon"></i>
       </div>
       <img
         width="100%"
@@ -239,6 +241,10 @@ function renderModalWorks() {
     </figure>
     `;
   });
+  const deleteWorkIcons = document.querySelectorAll(".delete-work-icon")
+  deleteWorkIcons.forEach(icon => {
+    icon.addEventListener('click', deleteWork)
+  })
 }
 
 // MODAL - ADD WORK SECTION
@@ -279,6 +285,8 @@ function displaySelectedImage(event) {
   }
 }
 
+// DATABASE INTERACTIONS
+
 function sendWorkData() {
   const workForm = document.getElementById("addWorkForm");
   const formData = new FormData(workForm);
@@ -301,6 +309,11 @@ function sendWorkData() {
     })
     .then((data) => console.log(data))
     .catch((err) => console.error(err));
+}
+
+function deleteWork() {
+  console.log('clicked')
+  confirmModal.showModal()
 }
 
 // OTHER
