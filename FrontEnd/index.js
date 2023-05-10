@@ -4,6 +4,7 @@ const apiURL = "http://localhost:5678/api";
 const worksCollection = await getWorks();
 let isModalDisplayed = false;
 let selectedImage;
+let selectedWorkId;
 
 // DOM
 
@@ -15,7 +16,8 @@ const navLogin = document.getElementById("navLogin");
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 const editButton = document.getElementById("editButton");
-const confirmModal = document.querySelector("[data-modal]")
+const confirmModal = document.querySelector("[data-modal]");
+const confirmModalCloseBtn = document.getElementById("confirmModalCloseBtn");
 
 // API - GETTER FUNCTIONS
 
@@ -223,14 +225,13 @@ function resetCloseModalEvent() {
 }
 
 function renderModalWorks() {
-  console.log('rendering..;')
   const modalList = document.getElementById("modalWorkList");
   modalList.innerHTML = "";
   worksCollection.forEach(({ imageUrl, title, id }) => {
     modalList.innerHTML += `
-    <figure class="modal-work" id=${id}>
-      <div class="modal-work__trash">
-        <i class="fa-solid fa-trash-can delete-work-icon"></i>
+    <figure class="modal-work">
+      <div id=${id} class="modal-work__trash delete-work-icon">
+        <i class="fa-solid fa-trash-can"></i>
       </div>
       <img
         width="100%"
@@ -241,10 +242,10 @@ function renderModalWorks() {
     </figure>
     `;
   });
-  const deleteWorkIcons = document.querySelectorAll(".delete-work-icon")
-  deleteWorkIcons.forEach(icon => {
-    icon.addEventListener('click', deleteWork)
-  })
+  const deleteWorkIcons = document.querySelectorAll(".delete-work-icon");
+  deleteWorkIcons.forEach((icon) => {
+    icon.addEventListener("click", openConfirmModal);
+  });
 }
 
 // MODAL - ADD WORK SECTION
@@ -252,13 +253,17 @@ function renderModalWorks() {
 async function onAddWork() {
   modalContent.innerHTML = modalFormContent;
   resetCloseModalEvent();
+
   document
     .getElementById("returnModalIcon")
     .addEventListener("click", renderLandingModal);
+
   document
     .getElementById("image")
     .addEventListener("change", displaySelectedImage);
+
   const categories = await getCategories();
+
   document.getElementById("category").innerHTML = categories.map(
     ({ id, name }) => {
       return `<option value=${id}>${name}</option>`;
@@ -312,8 +317,31 @@ function sendWorkData() {
 }
 
 function deleteWork() {
-  console.log('clicked')
-  confirmModal.showModal()
+  const userToken = localStorage.getItem("token");
+  fetch(`${apiURL}/works/${selectedWorkId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+    body: selectedWorkId,
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+      }
+      return res.json();
+    })
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
+}
+
+function openConfirmModal(event) {
+  selectedWorkId = event.target.id
+  confirmModal.showModal();
+}
+
+function closeConfirmModal() {
+  confirmModal.close();
 }
 
 // OTHER
@@ -340,6 +368,8 @@ function onLoadEvents() {
   if (isMainPage()) {
     modal.addEventListener("click", toggleModal);
   }
+  confirmModalCloseBtn.addEventListener("click", closeConfirmModal);
+  confirmDeletionBtn.addEventListener("click", deleteWork);
 }
 
 onLoadEvents();

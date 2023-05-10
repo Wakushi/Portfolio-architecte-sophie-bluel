@@ -573,6 +573,10 @@ footer nav ul {
   border-radius: 0.2rem;
 }
 
+.fa-trash-can {
+  pointer-events: none;
+}
+
 #sendWorkBtn,
 #addWorkButton {
   max-width: 237px;
