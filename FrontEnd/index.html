@@ -33,7 +33,7 @@
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
-        <ul>
+        <ul class="flex--aligned">
           <li class="active--link"><a href="#">projets</a></li>
           <li><a href="#contact">contact</a></li>
           <li><a href="./pages/login.html" id="navLogin">login</a></li>
@@ -42,7 +42,7 @@
       </nav>
     </header>
     <main>
-      <section id="introduction">
+      <section id="introduction" class="flex--aligned">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="" />
         </figure>
@@ -78,7 +78,7 @@
         </div>
       </section>
       <section id="portfolio">
-        <div class="projects-top">
+        <div class="projects-top flex--center flex--aligned">
           <h2>Mes Projets</h2>
           <div id="editButton" class="edit-button edit-button--bottom">
             <div>
@@ -87,7 +87,7 @@
             <span>modifier</span>
           </div>
         </div>
-        <div id="galleryFilters" class="gallery__filters">
+        <div id="galleryFilters" class="gallery__filters flex--center">
           <button
             class="basic-button filter-button button--active"
             id="filterAll"
@@ -100,7 +100,7 @@
       <section id="contact">
         <h2>Contact</h2>
         <p>Vous avez un projet ? Discutons-en !</p>
-        <form action="#" method="post">
+        <form class="flex--column" action="#" method="post">
           <label for="name">Nom</label>
           <input type="text" name="name" id="name" />
           <label for="email">Email</label>
@@ -114,19 +114,26 @@
 
     <footer>
       <nav>
-        <ul>
+        <ul class="flex">
           <li>Mentions Légales</li>
         </ul>
       </nav>
     </footer>
     <div id="modal" class="modal-container">
-      <div id="modalContent" class="modal"></div>
+      <div id="modalContent" class="modal flex--column"></div>
     </div>
-    <dialog data-modal>
-        <span>Souhaitez-vous supprimer ce projet ?</span>
-        <button id="confirmDeletionBtn">Oui</button>
-        <button id="confirmModalCloseBtn">Non</button>
-    </dialog>
+    <div
+      id="confirmModal"
+      class="confirm-modal-container"
+    >
+      <div class="confirm-modal flex--center flex--aligned flex--column">
+        <p>Souhaitez-vous supprimer ce projet ?</p>
+        <div class="confirm-modal__buttons flex--aligned">
+          <button class="basic-button button--active" id="confirmDeletionBtn">Oui</button>
+          <button class="basic-button button--active" id="confirmModalCloseBtn">Non</button>
+        </div>
+      </div>
+    </div>
     <script type="module" src="index.js"></script>
   </body>
 </html>

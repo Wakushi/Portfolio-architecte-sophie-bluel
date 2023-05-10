@@ -1,7 +1,7 @@
 // VARIABLES
 
 const apiURL = "http://localhost:5678/api";
-const worksCollection = await getWorks();
+let worksCollection = await getWorks();
 let isModalDisplayed = false;
 let selectedImage;
 let selectedWorkId;
@@ -16,8 +16,9 @@ const navLogin = document.getElementById("navLogin");
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 const editButton = document.getElementById("editButton");
-const confirmModal = document.querySelector("[data-modal]");
+const confirmModal = document.getElementById("confirmModal");
 const confirmModalCloseBtn = document.getElementById("confirmModalCloseBtn");
+const confirmDeletionBtn = document.getElementById("confirmDeletionBtn")
 
 // API - GETTER FUNCTIONS
 
@@ -62,6 +63,7 @@ async function renderFilters() {
 
 function renderGallery(workArray) {
   if (gallery) {
+    gallery.innerHTML = "";
     workArray.forEach(({ imageUrl, title }) => {
       gallery.innerHTML += `
         <figure>
@@ -145,7 +147,7 @@ function logOut() {
   localStorage.clear("token");
 }
 
-// EDIT FEATURES
+// PAGE EDIT FEATURES
 
 function handleEditButtonsRender() {
   const editButtons = document.querySelectorAll(".edit-button");
@@ -164,7 +166,7 @@ function handleEditButtonsRender() {
   }
 }
 
-// MODAL
+// WORKS EDIT MODAL
 
 const landingModalContent = `
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
@@ -178,16 +180,18 @@ const modalFormContent = `
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
     <h2>Ajout Photo</h2>
     <form id="addWorkForm" class="basic-form">
-      <section id="modalAddPicture" class="modal__add-picture">
+      <section id="modalAddPicture" class="modal__add-picture flex--center flex--column flex--aligned">
         <img class="picture-icon" src='./assets/icons/picture.png' alt="Picture icon" />
         <label class="basic-button add-picture--button" for="image">+ Ajouter photo</label>
         <input name="image" id="image" type="file" style="display:none;"/>
         <span>jpg, png : 4mo max</span>
       </section>
-      <label for="title">Titre</label>
-      <input id="title" name="title" type="text" />
-      <label for="category">Catégorie</label>
-       <select id="category" name="category"></select>
+      <section class="flex--center flex--column">
+        <label class="label--text" for="title">Titre</label>
+        <input id="title" name="title" type="text" />
+        <label class="label--text" for="category">Catégorie</label>
+        <select id="category" name="category"></select>
+      </section>
     </form>
     <button id="sendWorkBtn" class="basic-button button--active">Valider</button>`;
 
@@ -230,7 +234,7 @@ function renderModalWorks() {
   worksCollection.forEach(({ imageUrl, title, id }) => {
     modalList.innerHTML += `
     <figure class="modal-work">
-      <div id=${id} class="modal-work__trash delete-work-icon">
+      <div id=${id} class="modal-work__trash delete-work-icon flex--center">
         <i class="fa-solid fa-trash-can"></i>
       </div>
       <img
@@ -292,6 +296,9 @@ function displaySelectedImage(event) {
 
 // DATABASE INTERACTIONS
 
+
+// ADD WORK METHOD
+
 function sendWorkData() {
   const workForm = document.getElementById("addWorkForm");
   const formData = new FormData(workForm);
@@ -312,9 +319,15 @@ function sendWorkData() {
       }
       return res.json();
     })
-    .then((data) => console.log(data))
+    .then((data) => {
+      worksCollection.push(data);
+      renderGallery(worksCollection);
+      closeModal();
+    })
     .catch((err) => console.error(err));
 }
+
+// DELETE WORK METHOD
 
 function deleteWork() {
   const userToken = localStorage.getItem("token");
@@ -329,19 +342,24 @@ function deleteWork() {
       if (!res.ok) {
         throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
       }
-      return res.json();
     })
-    .then((data) => console.log(data))
+    .then(async () => {
+      worksCollection = await getWorks();
+      renderGallery(worksCollection)
+      renderModalWorks();
+      closeConfirmModal();
+    })
     .catch((err) => console.error(err));
 }
 
 function openConfirmModal(event) {
-  selectedWorkId = event.target.id
-  confirmModal.showModal();
+  selectedWorkId = event.target.id;
+  confirmModal.style.display = "flex"
 }
 
 function closeConfirmModal() {
-  confirmModal.close();
+  if(confirmModal)
+  confirmModal.style.display = "none"
 }
 
 // OTHER
@@ -358,6 +376,7 @@ function isMainPage() {
 // ON LOAD EVENTS
 
 function onLoadEvents() {
+  closeConfirmModal()
   renderGallery(worksCollection);
   renderFilters();
   isUserLogged();
@@ -367,9 +386,9 @@ function onLoadEvents() {
   handleEditButtonsRender();
   if (isMainPage()) {
     modal.addEventListener("click", toggleModal);
+    confirmModalCloseBtn.addEventListener("click", closeConfirmModal);
+    confirmDeletionBtn.addEventListener("click", deleteWork);
   }
-  confirmModalCloseBtn.addEventListener("click", closeConfirmModal);
-  confirmDeletionBtn.addEventListener("click", deleteWork);
 }
 
 onLoadEvents();
