@@ -35,21 +35,19 @@ function getWorks() {
 }
 
 function getCategories() {
-  const categories = fetch(`${apiURL}/categories`)
-    .then((res) => res.json())
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => console.error(err));
-  return categories;
+  let categoryMap = new Map();
+  worksCollection.forEach((work) => {
+    categoryMap.set(work.category.id, work.category.name);
+  });
+  return categoryMap;
 }
 
 // RENDERING FUNCTIONS
 
 async function renderFilters() {
   if (galleryFilters) {
-    const categories = await getCategories();
-    categories.forEach(({ id, name }) => {
+    const categories = getCategories();
+    categories.forEach((name, id) => {
       galleryFilters.innerHTML += `
           <button id=${id} class='basic-button filter-button'>${name}</button>
       `;
