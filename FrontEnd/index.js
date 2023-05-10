@@ -44,7 +44,7 @@ function getCategories() {
 
 // RENDERING FUNCTIONS
 
-async function renderFilters() {
+function renderFilters() {
   if (galleryFilters) {
     getCategories().forEach((name, id) => {
       galleryFilters.innerHTML += `
