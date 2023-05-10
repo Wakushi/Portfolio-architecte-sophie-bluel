@@ -18,7 +18,7 @@ const modalContent = document.getElementById("modalContent");
 const editButton = document.getElementById("editButton");
 const confirmModal = document.getElementById("confirmModal");
 const confirmModalCloseBtn = document.getElementById("confirmModalCloseBtn");
-const confirmDeletionBtn = document.getElementById("confirmDeletionBtn")
+const confirmDeletionBtn = document.getElementById("confirmDeletionBtn");
 
 // API - GETTER FUNCTIONS
 
@@ -186,14 +186,20 @@ const modalFormContent = `
         <input name="image" id="image" type="file" style="display:none;"/>
         <span>jpg, png : 4mo max</span>
       </section>
-      <section class="flex--center flex--column">
-        <label class="label--text" for="title">Titre</label>
-        <input id="title" name="title" type="text" />
-        <label class="label--text" for="category">Catégorie</label>
-        <select id="category" name="category"></select>
+      <p id="imageWarning" class="warning--text">*Champ obligatoire</p>
+      <section class="modal__add-info flex--center flex--column">
+        <div class="form--sub-section flex--column">
+          <label class="label--text" for="title">Titre</label>
+          <input id="title" name="title" type="text" />
+          <p id="titleWarning" class="warning--text">*Champ obligatoire</p>
+        </div>
+        <div class="form--sub-section flex--column">
+          <label class="label--text" for="category">Catégorie</label>
+          <select id="category" name="category"></select>
+        <div>
       </section>
     </form>
-    <button id="sendWorkBtn" class="basic-button button--active">Valider</button>`;
+    <button id="sendWorkBtn" class="basic-button button--active" disabled="true">Valider</button>`;
 
 function toggleModal(event) {
   if (event.target !== modal && event.target !== editButton) {
@@ -215,6 +221,7 @@ function renderLandingModal() {
   renderModalWorks();
   document.getElementById("addWorkButton").addEventListener("click", onAddWork);
   resetCloseModalEvent();
+  selectedImage = undefined;
 }
 
 function closeModal() {
@@ -266,6 +273,10 @@ async function onAddWork() {
     .getElementById("image")
     .addEventListener("change", displaySelectedImage);
 
+  document
+    .getElementById("addWorkForm")
+    .addEventListener("change", checkFormValidity);
+
   const categories = await getCategories();
 
   document.getElementById("category").innerHTML = categories.map(
@@ -294,8 +305,25 @@ function displaySelectedImage(event) {
   }
 }
 
-// DATABASE INTERACTIONS
+function checkFormValidity() {
+  const title = document.getElementById("title");
+  const sendWorkBtn = document.getElementById("sendWorkBtn");
+  if (selectedImage !== undefined) {
+    document.getElementById("imageWarning").style.display = "none";
+  }
+  if (title.value) {
+    document.getElementById("titleWarning").style.display = "none";
+  } else {
+    document.getElementById("titleWarning").style.display = "block";
+  }
+  if (selectedImage !== undefined && title.value) {
+    sendWorkBtn.disabled = false;
+  } else {
+    sendWorkBtn.disabled = true;
+  }
+}
 
+// DATABASE INTERACTIONS
 
 // ADD WORK METHOD
 
@@ -345,7 +373,7 @@ function deleteWork() {
     })
     .then(async () => {
       worksCollection = await getWorks();
-      renderGallery(worksCollection)
+      renderGallery(worksCollection);
       renderModalWorks();
       closeConfirmModal();
     })
@@ -354,12 +382,11 @@ function deleteWork() {
 
 function openConfirmModal(event) {
   selectedWorkId = event.target.id;
-  confirmModal.style.display = "flex"
+  confirmModal.style.display = "flex";
 }
 
 function closeConfirmModal() {
-  if(confirmModal)
-  confirmModal.style.display = "none"
+  if (confirmModal) confirmModal.style.display = "none";
 }
 
 // OTHER
@@ -376,7 +403,6 @@ function isMainPage() {
 // ON LOAD EVENTS
 
 function onLoadEvents() {
-  closeConfirmModal()
   renderGallery(worksCollection);
   renderFilters();
   isUserLogged();
