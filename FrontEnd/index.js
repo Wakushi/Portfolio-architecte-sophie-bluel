@@ -3,6 +3,7 @@
 const apiURL = "http://localhost:5678/api";
 const worksCollection = await getWorks();
 let isModalDisplayed = false;
+let selectedImage;
 
 // DOM
 
@@ -174,12 +175,12 @@ const modalFormContent = `
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
     <h2>Ajout Photo</h2>
     <form id="addWorkForm" class="basic-form">
-    <section id="modalAddPicture" class="modal__add-picture">
-      <img class="picture-icon" src='./assets/icons/picture.png' alt="Picture icon" />
-      <label class="basic-button add-picture--button" for="picture">+ Ajouter photo</label>
-      <input id="picture" type="file" style="display:none;"/>
-      <span>jpg, png : 4mo max</span>
-    </section>
+      <section id="modalAddPicture" class="modal__add-picture">
+        <img class="picture-icon" src='./assets/icons/picture.png' alt="Picture icon" />
+        <label class="basic-button add-picture--button" for="image">+ Ajouter photo</label>
+        <input name="image" id="image" type="file" style="display:none;"/>
+        <span>jpg, png : 4mo max</span>
+      </section>
       <label for="title">Titre</label>
       <input id="title" name="title" type="text" />
       <label for="category">Catégorie</label>
@@ -249,19 +250,23 @@ async function onAddWork() {
     .getElementById("returnModalIcon")
     .addEventListener("click", renderLandingModal);
   document
-    .getElementById("picture")
+    .getElementById("image")
     .addEventListener("change", displaySelectedImage);
   const categories = await getCategories();
   document.getElementById("category").innerHTML = categories.map(
     ({ id, name }) => {
-      return `<option id=${id}>${name}</option>`;
+      return `<option value=${id}>${name}</option>`;
     }
   );
+  document
+    .getElementById("sendWorkBtn")
+    .addEventListener("click", sendWorkData);
 }
 
 function displaySelectedImage(event) {
   const file = event.target.files[0];
   if (file) {
+    selectedImage = file;
     const reader = new FileReader();
     reader.onload = function (e) {
       const modalAddPicture = document.getElementById("modalAddPicture");
@@ -272,6 +277,30 @@ function displaySelectedImage(event) {
     };
     reader.readAsDataURL(file);
   }
+}
+
+function sendWorkData() {
+  const workForm = document.getElementById("addWorkForm");
+  const formData = new FormData(workForm);
+  const userToken = localStorage.getItem("token");
+  if (selectedImage) {
+    formData.append("image", selectedImage);
+  }
+  fetch(`${apiURL}/works`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+    body: formData,
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+      }
+      return res.json();
+    })
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
 }
 
 // OTHER
