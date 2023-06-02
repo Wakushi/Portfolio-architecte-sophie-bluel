@@ -113,27 +113,10 @@ function handleEditButtonsRender() {
   }
 }
 
-function displaySelectedImage(event) {
-  const file = event.target.files[0];
-  if (file) {
-    setSelectedImage(file);
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const modalAddPicture = document.getElementById("modalAddPicture");
-      modalAddPicture.innerHTML = `
-            <img height="165px" src=${e.target.result} alt="Selected picture"/>
-        `;
-      modalAddPicture.style.padding = "0";
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
 export {
   renderGallery,
   renderLandingModal,
   renderModalWorks,
-  displaySelectedImage,
   renderFilters,
   handleEditButtonsRender,
 };

@@ -1,22 +1,19 @@
-import { renderLandingModal, displaySelectedImage } from "./render.js";
-import { checkWorkFormValidity } from "./utils.js";
-import {
-  sendWorkData,
-  getCategories,
-  deleteWork
-} from "./works.service.js";
+import { renderLandingModal } from "./render.js"
+import { checkWorkFormValidity } from "./utils.js"
+import { displaySelectedImage, sendWorkData } from "./add-work.service.js"
+import { getCategories, deleteWork } from "./works.service.js"
 
-let isModalDisplayed = false;
-const modalContent = document.getElementById("modalContent");
-const editButton = document.getElementById("editButton");
-const confirmModal = document.getElementById("confirmModal");
+let isModalDisplayed = false
+const modalContent = document.getElementById("modalContent")
+const editButton = document.getElementById("editButton")
+const confirmModal = document.getElementById("confirmModal")
 
 const landingModalContent = `
     <i id="closeModalIcon" class="fa-solid fa-xmark"></i>
     <h2>Galerie photo</h2>
     <section id="modalWorkList" class="modal-work-list"></section>
     <button id="addWorkButton" class="basic-button">Ajouter une photo</button>
-    <button id="deleteGalleryBtn">Supprimer la galerie</button>`;
+    <button id="deleteGalleryBtn">Supprimer la galerie</button>`
 
 const modalFormContent = `
     <i id="returnModalIcon" class="fa-solid fa-arrow-left"></i>
@@ -42,84 +39,83 @@ const modalFormContent = `
         <div>
       </section>
     </form>
-    <button id="sendWorkBtn" class="basic-button button--active" disabled="true">Valider</button>`;
+    <button id="sendWorkBtn" class="basic-button button--active" disabled="true">Valider</button>`
 
 function toggleModal(event) {
-  if (event.target !== modal && event.target !== editButton) {
-    event.stopPropagation();
-  } else {
-    if (isModalDisplayed) {
-      modal.style.display = "none";
-      setIsModalDisplayed(false);
-    } else {
-      modal.style.display = "flex";
-      setIsModalDisplayed(true);
-      renderLandingModal();
-    }
-  }
+	if (event.target !== modal && event.target !== editButton) {
+		event.stopPropagation()
+	} else {
+		if (isModalDisplayed) {
+			modal.style.display = "none"
+			setIsModalDisplayed(false)
+		} else {
+			modal.style.display = "flex"
+			setIsModalDisplayed(true)
+			renderLandingModal()
+		}
+	}
 }
 
 function closeModal() {
-  modal.style.display = "none";
-  isModalDisplayed = false;
+	modal.style.display = "none"
+	isModalDisplayed = false
 }
 
 function openConfirmModal(event) {
-  const confirmDeletionBtn = document.getElementById("confirmDeletionBtn");
-  confirmDeletionBtn.addEventListener("click", () => deleteWork(event.target.id));
-  confirmModal.style.display = "flex";
+	const confirmDeletionBtn = document.getElementById("confirmDeletionBtn")
+	confirmDeletionBtn.addEventListener("click", () =>
+		deleteWork(event.target.id)
+	)
+	confirmModal.style.display = "flex"
 }
 
 function closeConfirmModal() {
-  if (confirmModal) confirmModal.style.display = "none";
+	if (confirmModal) confirmModal.style.display = "none"
 }
 
 function resetCloseModalEvent() {
-  document
-    .getElementById("closeModalIcon")
-    .addEventListener("click", closeModal);
+	document
+		.getElementById("closeModalIcon")
+		.addEventListener("click", closeModal)
 }
 
 async function onAddWork() {
-  modalContent.innerHTML = modalFormContent;
-  resetCloseModalEvent();
+	modalContent.innerHTML = modalFormContent
+	resetCloseModalEvent()
 
-  document
-    .getElementById("returnModalIcon")
-    .addEventListener("click", renderLandingModal);
+	document
+		.getElementById("returnModalIcon")
+		.addEventListener("click", renderLandingModal)
 
-  document
-    .getElementById("image")
-    .addEventListener("change", displaySelectedImage);
+	document
+		.getElementById("image")
+		.addEventListener("change", displaySelectedImage)
 
-  document
-    .getElementById("addWorkForm")
-    .addEventListener("change", checkWorkFormValidity);
+	document
+		.getElementById("addWorkForm")
+		.addEventListener("change", checkWorkFormValidity)
 
-  document
-    .getElementById("sendWorkBtn")
-    .addEventListener("click", sendWorkData);
+	document
+		.getElementById("sendWorkBtn")
+		.addEventListener("click", sendWorkData)
 
-  getCategories().forEach((name, id) => {
-    document.getElementById(
-      "category"
-    ).innerHTML += `<option value=${id}>${name}</option>`;
-  });
+	getCategories().forEach((name, id) => {
+		document.getElementById(
+			"category"
+		).innerHTML += `<option value=${id}>${name}</option>`
+	})
 }
 
 function setIsModalDisplayed(bool) {
-  isModalDisplayed = bool;
+	isModalDisplayed = bool
 }
 
 export {
-  landingModalContent,
-  modalFormContent,
-  closeModal,
-  isModalDisplayed,
-  setIsModalDisplayed,
-  toggleModal,
-  openConfirmModal,
-  closeConfirmModal,
-  onAddWork,
-  resetCloseModalEvent,
-};
+	landingModalContent,
+	closeModal,
+	toggleModal,
+	openConfirmModal,
+	closeConfirmModal,
+	onAddWork,
+	resetCloseModalEvent
+}

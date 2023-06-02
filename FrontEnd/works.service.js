@@ -1,10 +1,9 @@
 import { isMainPage } from "./utils.js"
 import { renderGallery, renderModalWorks } from "./render.js"
-import { closeModal, closeConfirmModal } from "./modals.js"
+import { closeConfirmModal } from "./modals.js"
 
 const apiURL = "http://localhost:5678/api"
 let worksCollection = await getWorks()
-let selectedWorkId
 let selectedImage
 
 function getWorks() {
@@ -23,36 +22,6 @@ function getCategories() {
 	})
 	return categoryMap
 }
-
-function sendWorkData() {
-	const workForm = document.getElementById("addWorkForm")
-	const formData = new FormData(workForm)
-	const userToken = localStorage.getItem("token")
-	if (selectedImage) {
-		formData.append("image", selectedImage)
-	}
-	fetch(`${apiURL}/works`, {
-		method: "POST",
-		headers: {
-			Authorization: `Bearer ${userToken}`
-		},
-		body: formData
-	})
-		.then((res) => {
-			if (!res.ok) {
-				throw new Error(`HTTP error ${res.status}: ${res.statusText}`)
-			}
-			return res.json()
-		})
-		.then((data) => {
-			worksCollection.push(data)
-			renderGallery(worksCollection)
-			closeModal()
-		})
-		.catch((err) => console.error(err))
-}
-
-// DELETE WORK METHOD
 
 function deleteWork(workId) {
 	const userToken = localStorage.getItem("token")
@@ -77,11 +46,8 @@ function deleteWork(workId) {
 		.catch((err) => console.error(err))
 }
 
-// SETTER METHODS
+// SETTER & GETTER METHODS
 
-function setSelectedWorkId(workId) {
-	selectedWorkId = workId
-}
 
 function setSelectedImage(image) {
 	selectedImage = image
@@ -93,12 +59,10 @@ function getWorksCollection() {
 
 export {
 	getWorksCollection,
+	worksCollection,
 	getCategories,
 	apiURL,
-	sendWorkData,
 	deleteWork,
-	selectedWorkId,
-	setSelectedWorkId,
 	selectedImage,
 	setSelectedImage
 }
