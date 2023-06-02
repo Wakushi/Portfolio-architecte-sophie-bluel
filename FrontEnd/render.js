@@ -6,7 +6,7 @@ import {
   toggleModal,
 } from "./modals.js";
 import {
-  worksCollection,
+  getWorksCollection,
   setSelectedImage,
   getCategories,
 } from "./works.service.js";
@@ -54,10 +54,10 @@ function onFilterGallery({ target }) {
   gallery.innerHTML = "";
   if (buttonId === "filterAll") {
     document.getElementById(buttonId).classList.add("button--active");
-    renderGallery(worksCollection);
+    renderGallery(getWorksCollection());
   } else {
     document.getElementById(buttonId).classList.add("button--active");
-    const filteredGallery = worksCollection.filter(
+    const filteredGallery = getWorksCollection().filter(
       (work) => work.categoryId == buttonId
     );
     renderGallery(filteredGallery);
@@ -75,7 +75,7 @@ function renderLandingModal() {
 function renderModalWorks() {
   const modalList = document.getElementById("modalWorkList");
   modalList.innerHTML = "";
-  worksCollection.forEach(({ imageUrl, title, id }) => {
+  getWorksCollection().forEach(({ imageUrl, title, id }) => {
     modalList.innerHTML += `
           <figure class="modal-work">
             <div id=${id} class="modal-work__trash delete-work-icon flex--center">

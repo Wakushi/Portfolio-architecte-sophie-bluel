@@ -3,7 +3,7 @@ import { checkWorkFormValidity } from "./utils.js";
 import {
   sendWorkData,
   getCategories,
-  setSelectedWorkId,
+  deleteWork
 } from "./works.service.js";
 
 let isModalDisplayed = false;
@@ -65,7 +65,8 @@ function closeModal() {
 }
 
 function openConfirmModal(event) {
-  setSelectedWorkId(event.target.id);
+  const confirmDeletionBtn = document.getElementById("confirmDeletionBtn");
+  confirmDeletionBtn.addEventListener("click", () => deleteWork(event.target.id));
   confirmModal.style.display = "flex";
 }
 

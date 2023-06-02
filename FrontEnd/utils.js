@@ -1,12 +1,7 @@
 import { selectedImage } from "./works.service.js";
 
 function isMainPage() {
-  const currentURL = window.location.pathname;
-  if (currentURL.includes("login")) {
-    return false;
-  } else {
-    return true;
-  }
+  return !window.location.pathname.includes("login")
 }
 
 function checkWorkFormValidity() {
