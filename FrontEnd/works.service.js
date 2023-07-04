@@ -2,13 +2,13 @@ import { isMainPage } from "./utils.js"
 import { renderGallery, renderModalWorks } from "./render.js"
 import { closeConfirmModal } from "./modals.js"
 
-const apiURL = "http://localhost:5678/api"
+const API_URL = "http://localhost:5678/api"
 let worksCollection = await getWorks()
 let selectedImage
 
 function getWorks() {
 	if (isMainPage()) {
-		const works = fetch(`${apiURL}/works`)
+		const works = fetch(`${API_URL}/works`)
 			.then((res) => res.json())
 			.catch((err) => console.error(err))
 		return works
@@ -25,7 +25,7 @@ function getCategories() {
 
 function deleteWork(workId) {
 	const userToken = localStorage.getItem("token")
-	fetch(`${apiURL}/works/${workId}`, {
+	fetch(`${API_URL}/works/${workId}`, {
 		method: "DELETE",
 		headers: {
 			Authorization: `Bearer ${userToken}`
@@ -61,7 +61,7 @@ export {
 	getWorksCollection,
 	worksCollection,
 	getCategories,
-	apiURL,
+	API_URL,
 	deleteWork,
 	selectedImage,
 	setSelectedImage

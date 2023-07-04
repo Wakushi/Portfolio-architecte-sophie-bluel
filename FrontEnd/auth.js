@@ -1,4 +1,4 @@
-import { apiURL } from "./works.service.js"
+import { API_URL } from "./works.service.js"
 
 // DOM
 
@@ -9,15 +9,13 @@ const navLogin = document.getElementById("navLogin")
 
 function login(event) {
 	event.preventDefault()
-	const email = loginForm.elements.email.value
-	const password = loginForm.elements.password.value
 
 	const user = {
-		email: email,
-		password: password
+		email: loginForm.elements.email.value,
+		password: loginForm.elements.password.value
 	}
 
-	fetch(`${apiURL}/users/login`, {
+	fetch(`${API_URL}/users/login`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"

@@ -2,7 +2,7 @@ import { closeModal } from "./modals.js"
 import {
 	setSelectedImage,
 	selectedImage,
-	apiURL,
+	API_URL,
 	worksCollection
 } from "./works.service.js"
 import { renderGallery } from "./render.js"
@@ -14,7 +14,7 @@ function sendWorkData() {
 	if (selectedImage) {
 		formData.append("image", selectedImage)
 	}
-	fetch(`${apiURL}/works`, {
+	fetch(`${API_URL}/works`, {
 		method: "POST",
 		headers: {
 			Authorization: `Bearer ${userToken}`
